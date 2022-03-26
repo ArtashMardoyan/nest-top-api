@@ -12,7 +12,7 @@ export class ReviewController {
     @HttpCode(HttpStatus.ACCEPTED)
     async delete(@Param('id') id: string) {}
 
-    @Get('getByProduct/:productId')
+    @Get('byProduct/:productId')
     @HttpCode(HttpStatus.OK)
     async getByProduct(@Param('productId') productId: string) {}
 }
