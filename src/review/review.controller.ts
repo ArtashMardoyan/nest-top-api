@@ -17,7 +17,7 @@ export class ReviewController {
     @Delete(':id')
     @HttpCode(HttpStatus.ACCEPTED)
     async delete(@Param('id') id: string) {
-        const deletedReview = this.reviewService.delete(id);
+        const deletedReview = await this.reviewService.delete(id);
 
         if (!deletedReview) {
             throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
