@@ -1,7 +1,7 @@
 import { prop } from '@typegoose/typegoose';
 import { TimeStamps } from '@typegoose/typegoose/lib/defaultClasses';
 
-export class AuthModel extends TimeStamps {
+export class UserModel extends TimeStamps {
     @prop({ unique: true })
     email: string;
 
