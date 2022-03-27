@@ -42,6 +42,17 @@ describe('ReviewController (e2e)', () => {
             });
     });
 
+    it('Review Create (FAIL)', done => {
+        request(app.getHttpServer())
+            .post('/review/create')
+            .send({ ...createReviewDto, rating: 6 })
+            .expect(HttpStatus.BAD_REQUEST)
+            .then(({ body }: request.Response) => {
+                console.log(body);
+                done();
+            });
+    });
+
     it('Find Review By Product (SUCCESS)', done => {
         request(app.getHttpServer())
             .get(`/review/byProduct/${productId}`)

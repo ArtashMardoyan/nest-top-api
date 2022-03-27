@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import {
+    Get,
+    Body,
+    Post,
+    Param,
+    Delete,
+    UsePipes,
+    HttpCode,
+    Controller,
+    HttpStatus,
+    HttpException,
+    ValidationPipe
+} from '@nestjs/common';
 
 import { CreateReviewDto } from './dto/create-review.dto';
 import { REVIEW_NOT_FOUND } from './review.constants';
@@ -10,6 +22,7 @@ export class ReviewController {
 
     @Post('create')
     @HttpCode(HttpStatus.CREATED)
+    @UsePipes(new ValidationPipe())
     async create(@Body() dto: CreateReviewDto) {
         return this.reviewService.create(dto);
     }
