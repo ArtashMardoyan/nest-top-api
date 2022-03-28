@@ -5,10 +5,12 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 
 import { REVIEW_NOT_FOUND_ERROR } from '../src/review/review.constants';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
+import { AuthDto } from '../src/auth/dto/auth.dto';
 import { AppModule } from '../src/app.module';
 
 const productId = new Types.ObjectId().toHexString();
 
+const loginDto: AuthDto = { login: 'test-2@mailinator.com', password: 'test' };
 const createReviewDto: CreateReviewDto = {
     name: 'Name',
     title: 'Title',
@@ -20,6 +22,7 @@ const createReviewDto: CreateReviewDto = {
 describe('ReviewController (e2e)', () => {
     let app: INestApplication;
     let createdReviewId: string;
+    let accessToken: string;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
@@ -28,6 +31,9 @@ describe('ReviewController (e2e)', () => {
 
         app = moduleFixture.createNestApplication();
         await app.init();
+
+        const { body } = await request(app.getHttpServer()).post('/auth/login').send(loginDto);
+        accessToken = `Bearer ${body.accessToken}`;
     });
 
     it('Review Create (SUCCESS)', done => {
@@ -47,10 +53,7 @@ describe('ReviewController (e2e)', () => {
             .post('/review/create')
             .send({ ...createReviewDto, rating: 6 })
             .expect(HttpStatus.BAD_REQUEST)
-            .then(({ body }: request.Response) => {
-                console.log(body);
-                done();
-            });
+            .then(() => done());
     });
 
     it('Find Review By Product (SUCCESS)', done => {
@@ -76,6 +79,7 @@ describe('ReviewController (e2e)', () => {
     it('Review Delete (SUCCESS)', done => {
         request(app.getHttpServer())
             .delete(`/review/${createdReviewId}`)
+            .set('Authorization', accessToken)
             .expect(HttpStatus.ACCEPTED)
             .then(() => done());
     });
@@ -83,6 +87,7 @@ describe('ReviewController (e2e)', () => {
     it('Review Delete (FAIL)', done => {
         request(app.getHttpServer())
             .delete(`/review/${new Types.ObjectId().toHexString()}`)
+            .set('Authorization', accessToken)
             .expect(HttpStatus.NOT_FOUND, {
                 statusCode: HttpStatus.NOT_FOUND,
                 message: REVIEW_NOT_FOUND_ERROR

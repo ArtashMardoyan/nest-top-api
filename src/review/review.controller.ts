@@ -17,6 +17,7 @@ import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ReviewService } from './review.service';
+import { UserEmailDecorator } from '../decorators/user-email.decorator';
 
 @Controller('review')
 export class ReviewController {
@@ -32,8 +33,10 @@ export class ReviewController {
     @Delete(':id')
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.ACCEPTED)
-    async delete(@Param('id') id: string) {
+    async delete(@Param('id') id: string, @UserEmailDecorator() email: string) {
         const deletedReview = await this.reviewService.delete(id);
+
+        console.log(email);
 
         if (!deletedReview) {
             throw new HttpException(REVIEW_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
