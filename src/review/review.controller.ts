@@ -6,6 +6,7 @@ import {
     Delete,
     UsePipes,
     HttpCode,
+    UseGuards,
     Controller,
     HttpStatus,
     HttpException,
@@ -14,6 +15,7 @@ import {
 
 import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
+import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ReviewService } from './review.service';
 
 @Controller('review')
@@ -28,6 +30,7 @@ export class ReviewController {
     }
 
     @Delete(':id')
+    @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.ACCEPTED)
     async delete(@Param('id') id: string) {
         const deletedReview = await this.reviewService.delete(id);
@@ -39,8 +42,8 @@ export class ReviewController {
         return deletedReview;
     }
 
-    @Get('byProduct/:productId')
     @HttpCode(HttpStatus.OK)
+    @Get('byProduct/:productId')
     async findByProductId(@Param('productId') productId: string) {
         return this.reviewService.findByProductId(productId);
     }
