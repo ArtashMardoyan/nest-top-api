@@ -3,8 +3,8 @@ import { Types, disconnect } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 
+import { REVIEW_NOT_FOUND_ERROR } from '../src/review/review.constants';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
-import { REVIEW_NOT_FOUND } from '../src/review/review.constants';
 import { AppModule } from '../src/app.module';
 
 const productId = new Types.ObjectId().toHexString();
@@ -85,7 +85,7 @@ describe('ReviewController (e2e)', () => {
             .delete(`/review/${new Types.ObjectId().toHexString()}`)
             .expect(HttpStatus.NOT_FOUND, {
                 statusCode: HttpStatus.NOT_FOUND,
-                message: REVIEW_NOT_FOUND
+                message: REVIEW_NOT_FOUND_ERROR
             })
             .then(() => done());
     });

@@ -1,8 +1,8 @@
 import {
     Body,
     Post,
-    UsePipes,
     HttpCode,
+    UsePipes,
     Controller,
     HttpStatus,
     ValidationPipe,
@@ -32,13 +32,10 @@ export class AuthController {
 
     @Post('login')
     @HttpCode(HttpStatus.OK)
-    async login(@Body() dto: AuthDto) {
-        const existingUser = await this.authService.findUser(dto.login);
+    @UsePipes(new ValidationPipe())
+    async login(@Body() { login, password }: AuthDto) {
+        const { email } = await this.authService.validateUser(login, password);
 
-        if (!existingUser) {
-            throw new BadRequestException(ALREADY_REGISTERED_ERROR);
-        }
-
-        return existingUser;
+        return this.authService.login(email);
     }
 }

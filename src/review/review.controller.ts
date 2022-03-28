@@ -12,8 +12,8 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 
+import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
-import { REVIEW_NOT_FOUND } from './review.constants';
 import { ReviewService } from './review.service';
 
 @Controller('review')
@@ -33,7 +33,7 @@ export class ReviewController {
         const deletedReview = await this.reviewService.delete(id);
 
         if (!deletedReview) {
-            throw new HttpException(REVIEW_NOT_FOUND, HttpStatus.NOT_FOUND);
+            throw new HttpException(REVIEW_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
         }
 
         return deletedReview;
