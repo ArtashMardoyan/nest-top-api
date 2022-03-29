@@ -6,8 +6,8 @@ import { ReviewService } from './review.service';
 import { ReviewModel } from './review.model';
 
 @Module({
-    providers: [ReviewService],
     controllers: [ReviewController],
+    providers: [ReviewService],
     imports: [
         TypegooseModule.forFeature([
             {

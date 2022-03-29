@@ -12,6 +12,8 @@ import { AppService } from './app.service';
 import { FilesModule } from './files/files.module';
 
 @Module({
+    controllers: [AppController],
+    providers: [AppService],
     imports: [
         ConfigModule.forRoot(),
         TypegooseModule.forRootAsync({
@@ -24,8 +26,6 @@ import { FilesModule } from './files/files.module';
         ProductModule,
         ReviewModule,
         FilesModule
-    ],
-    controllers: [AppController],
-    providers: [AppService]
+    ]
 })
 export class AppModule {}
