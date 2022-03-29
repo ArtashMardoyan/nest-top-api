@@ -16,11 +16,11 @@ import {
 
 import { UserEmailDecorator } from '../decorators/user-email.decorator';
 import { IdValidationPipe } from '../pipes/id-validation.pipe';
+import { TelegramService } from '../telegram/telegram.service';
 import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ReviewService } from './review.service';
-import { TelegramService } from '../telegram/telegram.service';
 
 @Controller('review')
 export class ReviewController {
