@@ -88,10 +88,7 @@ describe('ReviewController (e2e)', () => {
         request(app.getHttpServer())
             .delete(`/review/${new Types.ObjectId().toHexString()}`)
             .set('Authorization', accessToken)
-            .expect(HttpStatus.NOT_FOUND, {
-                statusCode: HttpStatus.NOT_FOUND,
-                message: REVIEW_NOT_FOUND_ERROR
-            })
+            .expect(HttpStatus.NOT_FOUND)
             .then(() => done());
     });
 

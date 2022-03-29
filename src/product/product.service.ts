@@ -11,7 +11,7 @@ export class ProductService {
     constructor(@InjectModel(ProductModel) private readonly productModel: ModelType<ProductModel>) {}
 
     async create(dto: CreateProductDto) {
-        return await this.productModel.create(dto);
+        return this.productModel.create(dto);
     }
 
     async findById(id: string) {
