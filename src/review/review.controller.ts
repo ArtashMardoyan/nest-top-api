@@ -20,16 +20,30 @@ import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ReviewService } from './review.service';
+import { TelegramService } from '../telegram/telegram.service';
 
 @Controller('review')
 export class ReviewController {
-    constructor(private readonly reviewService: ReviewService) {}
+    constructor(private readonly reviewService: ReviewService, private readonly telegramService: TelegramService) {}
 
     @Post('create')
     @HttpCode(HttpStatus.CREATED)
     @UsePipes(new ValidationPipe())
     async create(@Body() dto: CreateReviewDto) {
         return this.reviewService.create(dto);
+    }
+
+    @Post('notify')
+    @HttpCode(HttpStatus.CREATED)
+    @UsePipes(new ValidationPipe())
+    async notify(@Body() dto: CreateReviewDto) {
+        const message =
+            `title: ${dto.title}\n` +
+            `description: ${dto.description}\n` +
+            `rating: ${dto.rating}\n` +
+            `productId: ${dto.productId}`;
+
+        return this.telegramService.sendMessage(message);
     }
 
     @Delete(':id')
