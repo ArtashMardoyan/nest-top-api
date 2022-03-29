@@ -13,11 +13,11 @@ import {
     ValidationPipe
 } from '@nestjs/common';
 
+import { UserEmailDecorator } from '../decorators/user-email.decorator';
 import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
 import { ReviewService } from './review.service';
-import { UserEmailDecorator } from '../decorators/user-email.decorator';
 
 @Controller('review')
 export class ReviewController {

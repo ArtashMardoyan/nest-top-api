@@ -10,7 +10,6 @@ const loginDto: AuthDto = { login: 'test-2@mailinator.com', password: 'test' };
 
 describe('AuthController (e2e)', () => {
     let app: INestApplication;
-    let accessToken: string;
 
     beforeEach(async () => {
         const moduleFixture: TestingModule = await Test.createTestingModule({
