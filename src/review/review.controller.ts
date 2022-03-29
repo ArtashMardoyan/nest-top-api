@@ -9,11 +9,13 @@ import {
     UseGuards,
     Controller,
     HttpStatus,
-    HttpException,
-    ValidationPipe
+    ValidationPipe,
+    NotFoundException,
+    UnauthorizedException
 } from '@nestjs/common';
 
 import { UserEmailDecorator } from '../decorators/user-email.decorator';
+import { IdValidationPipe } from '../pipes/id-validation.pipe';
 import { REVIEW_NOT_FOUND_ERROR } from './review.constants';
 import { CreateReviewDto } from './dto/create-review.dto';
 import { JwtGuard } from '../auth/guards/jwt.guard';
@@ -33,13 +35,13 @@ export class ReviewController {
     @Delete(':id')
     @UseGuards(JwtGuard)
     @HttpCode(HttpStatus.ACCEPTED)
-    async delete(@Param('id') id: string, @UserEmailDecorator() email: string) {
+    async delete(@Param('id', IdValidationPipe) id: string, @UserEmailDecorator() email: string) {
         const deletedReview = await this.reviewService.delete(id);
 
-        console.log(email);
-
         if (!deletedReview) {
-            throw new HttpException(REVIEW_NOT_FOUND_ERROR, HttpStatus.NOT_FOUND);
+            throw new NotFoundException(REVIEW_NOT_FOUND_ERROR);
+        } else if (!email) {
+            throw new UnauthorizedException();
         }
 
         return deletedReview;
@@ -47,7 +49,7 @@ export class ReviewController {
 
     @HttpCode(HttpStatus.OK)
     @Get('byProduct/:productId')
-    async findByProductId(@Param('productId') productId: string) {
+    async findByProductId(@Param('productId', IdValidationPipe) productId: string) {
         return this.reviewService.findByProductId(productId);
     }
 }
