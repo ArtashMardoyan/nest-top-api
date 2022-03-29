@@ -9,6 +9,7 @@ import { ReviewModule } from './review/review.module';
 import { AppController } from './app.controller';
 import { AuthModule } from './auth/auth.module';
 import { AppService } from './app.service';
+import { FilesModule } from './files/files.module';
 
 @Module({
     imports: [
@@ -21,7 +22,8 @@ import { AppService } from './app.service';
         AuthModule,
         TopPageModule,
         ProductModule,
-        ReviewModule
+        ReviewModule,
+        FilesModule
     ],
     controllers: [AppController],
     providers: [AppService]
