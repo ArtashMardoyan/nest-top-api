@@ -3,7 +3,6 @@ import { Types, disconnect } from 'mongoose';
 import { Test, TestingModule } from '@nestjs/testing';
 import { HttpStatus, INestApplication } from '@nestjs/common';
 
-import { REVIEW_NOT_FOUND_ERROR } from '../src/review/review.constants';
 import { CreateReviewDto } from '../src/review/dto/create-review.dto';
 import { AuthDto } from '../src/auth/dto/auth.dto';
 import { AppModule } from '../src/app.module';
