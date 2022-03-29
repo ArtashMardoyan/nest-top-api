@@ -31,8 +31,21 @@ export class TopPageService {
     }
 
     async find(dto: FindTopPageDto) {
+        // return this.topPageModel
+        //     .find({ firstCategory: dto.firstCategory }, { alias: 1, firstCategory: 1, secondCategory: 1 })
+        //     .exec();
+
         return this.topPageModel
-            .find({ firstCategory: dto.firstCategory }, { alias: 1, firstCategory: 1, secondCategory: 1 })
+            .aggregate()
+            .match({ firstCategory: dto.firstCategory })
+            .group({
+                _id: { secondCategory: '$secondCategory' },
+                pages: { $push: { alias: '$alias', title: '$title' } }
+            })
             .exec();
+    }
+
+    async search(text: string) {
+        return this.topPageModel.find({ $text: { $search: text, $caseSensitive: false } }).exec();
     }
 }
