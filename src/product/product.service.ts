@@ -33,7 +33,22 @@ export class ProductService {
                 { $sort: { _id: 1 } },
                 { $limit: dto.limit },
                 { $lookup: { from: 'Review', localField: '_id', foreignField: 'productId', as: 'reviews' } },
-                { $addFields: { reviewCount: { $size: '$reviews' }, reviewAvg: { $avg: '$reviews.rating' } } }
+                {
+                    $addFields: {
+                        reviewCount: { $size: '$reviews' },
+                        reviewAvg: { $avg: '$reviews.rating' },
+                        reviews: {
+                            $function: {
+                                body: `function (reviews) {
+                                    reviews.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+                                    return reviews;
+                                }`,
+                                args: ['$reviews'],
+                                lang: 'js'
+                            }
+                        }
+                    }
+                }
             ])
             .exec();
     }
