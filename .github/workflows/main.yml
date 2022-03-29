@@ -12,6 +12,6 @@ jobs:
         with:
           registry: docker.pkg.github.com
           name: docker.pkg.github.com/ArtashMardoyan/nest-top-api/nest-top-api
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_PASSWORD }}
+          username: artashmardoyan
+          password: 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
           tags: "develop"
